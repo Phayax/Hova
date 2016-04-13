@@ -1,3 +1,4 @@
+#include <SFML/Window.hpp>
 #include "ship.hpp"
 
 using namespace sf;
@@ -12,6 +13,18 @@ Ship::Ship(const int initx, const int inity)
 
 void Ship::Update()
 {
+	if(Keyboard::isKeyPressed(Keyboard::Key::Left)) {
+		velocity.x -= 0.1f;
+	}
+	if (Keyboard::isKeyPressed(Keyboard::Key::Right)) {
+		velocity.x += 0.1f;
+	}
+	if(Keyboard::isKeyPressed(Keyboard::Key::Up)) {
+		velocity.y -= 0.1f;
+	}
+	if (Keyboard::isKeyPressed(Keyboard::Key::Down)) {
+		velocity.y += 0.1f;
+	}
 	shape.move(velocity);
 }
 

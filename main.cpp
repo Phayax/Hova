@@ -1,5 +1,3 @@
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
 #include "game.hpp"
 
 using namespace std;
