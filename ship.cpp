@@ -91,17 +91,22 @@ void ShipVelocity::applyGravity(){}
 void ShipVelocity::update()
 {
 	shape.setPosition(ship->getRelPosition());
+	// set position in the middle of the ship
+
+	// get the current velocity and calculate the polar coordinates 
 	Vector2f velocity = ship->getVelocity();
+	// pythagoras \o/
 	float length = std::sqrt(std::pow(velocity.x, 2) + std::pow(velocity.y, 2));
-	//std::cout << std::to_string(velocity.x) + ", " + std::to_string(velocity.y) + " -> " + std::to_string(length) << std::endl;
+	// scale up for visibility
+	// and set new length
 	length *= 10;
+
+	// set the length and angle
 	shape.setSize(Vector2f(2, length));
-	//shape.rotate(3.0f);
-	std::cout << atanDeg(velocity.x, velocity.y) << std::endl;
-	shape.setRotation(atanDeg(velocity.x, velocity.y));
+	shape.setRotation(atanDeg(velocity));
 }
 
-float ShipVelocity::atanDeg(const float x, const float y)
+float ShipVelocity::atanDeg(const Vector2f vector)
 {
 	// radian-angle and angle(in degree - the target unit)
 	float rangle{0.0f};
@@ -109,18 +114,19 @@ float ShipVelocity::atanDeg(const float x, const float y)
 
 	// calculate for window coordinates
 
-	rangle = atan(y / x);
-	if (x < 0) {
-		// atan(1) = π/4
-		rangle += atan(1) * 4;
+	rangle = atan(vector.y / vector.x);
+	if (vector.x < 0) {
+		// transform to correct angle
+		rangle += M_PI;
 	}
 
-	// change to degrees:
-	angle = rangle * 360.0f / (2 * atan(1) * 4);
+	// transform to degrees:
+	angle = rangle * 360.0f / (2 * M_PI);
 
-	while(angle < 0.0f){
-		angle += 360.0f;
-	}
+	// could be added if positive angles were neccessary.
+	// while(angle < 0.0f){
+	// 	angle += 360.0f;
+	// }
 
 	// transform to the rotation axis orientation of a Shape object:
 	// overlay the two x axis

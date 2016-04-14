@@ -36,7 +36,7 @@ class ShipVelocity : public Entity{
 	RectangleShape shape;
 	Ship* ship;
 
-	float atanDeg(const float x, const float y);
+	float atanDeg(const Vector2f vector);
 public: 
 	ShipVelocity(Ship* shipref);
 	RectangleShape getShape();
