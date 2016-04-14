@@ -33,10 +33,10 @@ public:
 };
 
 class ShipVelocity : public Entity{
+private:
 	RectangleShape shape;
 	Ship* ship;
 
-	float atanDeg(const Vector2f vector);
 public: 
 	ShipVelocity(Ship* shipref);
 	RectangleShape getShape();

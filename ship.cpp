@@ -1,7 +1,6 @@
 #include <SFML/Window.hpp>
 #include "ship.hpp"
-#include <cmath>
-#include <iostream>
+#include <complex>
 
 using namespace sf;
 
@@ -91,49 +90,18 @@ void ShipVelocity::applyGravity(){}
 void ShipVelocity::update()
 {
 	shape.setPosition(ship->getRelPosition());
+
 	// set position in the middle of the ship
-
-	// get the current velocity and calculate the polar coordinates 
 	Vector2f velocity = ship->getVelocity();
-	// pythagoras \o/
-	float length = std::sqrt(std::pow(velocity.x, 2) + std::pow(velocity.y, 2));
-	// scale up for visibility
-	// and set new length
-	length *= 10;
 
-	// set the length and angle
-	shape.setSize(Vector2f(2, length));
-	shape.setRotation(atanDeg(velocity));
-}
+	std::complex<float> cvelo{velocity.x, velocity.y};
 
-float ShipVelocity::atanDeg(const Vector2f vector)
-{
-	// radian-angle and angle(in degree - the target unit)
-	float rangle{0.0f};
-	float angle{0.0f};
-
-	// calculate for window coordinates
-
-	rangle = atan(vector.y / vector.x);
-	if (vector.x < 0) {
-		// transform to correct angle
-		rangle += M_PI;
-	}
-
-	// transform to degrees:
-	angle = rangle * 360.0f / (2 * M_PI);
-
-	// could be added if positive angles were neccessary.
-	// while(angle < 0.0f){
-	// 	angle += 360.0f;
-	// }
-
-	// transform to the rotation axis orientation of a Shape object:
-	// overlay the two x axis
-	angle -= 90.0f;
-
-	// return the value and cry about axis orientations
-	return angle;
+	// set new length and angle.
+	// length is scaled a bit for better visibility.
+	// the angle has to be converted to degrees and then transformed 
+	// to match the axis orientation of the Shape rotation system.
+	shape.setSize(Vector2f(2, abs(cvelo) * 10));
+	shape.setRotation(arg(cvelo) * 180.0f / M_PI - 90.0f);
 }
 
 RectangleShape ShipVelocity::getShape()

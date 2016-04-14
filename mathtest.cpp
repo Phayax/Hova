@@ -1,9 +1,9 @@
 #include <iostream>
-#include <math.h>
+#include <complex>
 
 float radToDeg(float rad)
 {
-	return rad / (2 * M_PI) * 360.0f;
+	return rad * 180.0f / M_PI;
 }
 
 float atanDeg(const float x, const float y)
@@ -27,10 +27,14 @@ float atanDeg(const float x, const float y)
 
 int main()
 {
-	std::cout << "atan(1/1) ->" << atanDeg(1,1) << std::endl;
-	std::cout << "atan(-1/1) ->" << atanDeg(-1,1) << std::endl;
-	std::cout << "atan(1/-1) ->" << atanDeg(1,-1) << std::endl;
-	std::cout << "atan(-1/-1) ->" << atanDeg(-1,-1) << std::endl;
+	std::complex<float> test{10.0f, 8.0f};
+	std::cout << "testing STL polar coordinate conversion" << std::endl;
+	std::cout << abs(test) << std::endl;
+	std::cout << radToDeg(arg(test)) << std::endl;
+	// std::cout << "atan(1/1) -> " << atanDeg(1,1) << std::endl;
+	// std::cout << "atan(-1/1) -> " << atanDeg(-1,1) << std::endl;
+	// std::cout << "atan(1/-1) -> " << atanDeg(1,-1) << std::endl;
+	// std::cout << "atan(-1/-1) -> " << atanDeg(-1,-1) << std::endl;
 
 	return 0;
 }
