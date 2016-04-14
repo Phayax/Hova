@@ -2,8 +2,17 @@
 
 using namespace sf;
 
-class Ship {
+class Entity {
+
+public:
+	const float gravity = 1.0f;
+	virtual void applyGravity() = 0;
+	virtual void update() = 0;
+};
+
+class Ship : public Entity{
 private:
+	const float shipAccel = .05f;
 	Vector2f velocity{0.0f, 0.0f};
 	RectangleShape shape;
 
@@ -14,9 +23,24 @@ public:
 	float getY();
 	Vector2f getRelPosition();
 	RectangleShape getShape();
+	Vector2f getVelocity();
 
 	void followMouse(Vector2i mpos);
 	void followMouseLine(Vector2i mpos);
 
-	void Update();
+	void applyGravity() override;
+	void update() override;
+};
+
+class ShipVelocity : public Entity{
+	RectangleShape shape;
+	Ship* ship;
+
+	float atanDeg(const float x, const float y);
+public: 
+	ShipVelocity(Ship* shipref);
+	RectangleShape getShape();
+
+	void applyGravity() override;
+	void update() override;
 };

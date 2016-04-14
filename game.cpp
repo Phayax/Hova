@@ -24,11 +24,13 @@ void Game::inputPhase(){
 }
 
 void Game::updatePhase(){
-	ship.followMouseLine(Mouse::getPosition(window));
-	ship.Update();
+	ship.followMouse(Mouse::getPosition(window));
+	ship.update();
+	shipVector.update();
 }
 
 void Game::renderPhase(){
 	window.draw(ship.getShape());
+	window.draw(shipVector.getShape());
 	window.display();
 }
