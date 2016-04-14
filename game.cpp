@@ -12,7 +12,7 @@ void Game::run(){
 	{
 		window.clear(Color::Black);
 		if (Keyboard::isKeyPressed(Keyboard::Key::Escape)) break;
-		window.setTitle("Hova | mx: " + std::to_string(Mouse::getPosition(window).x) + " , my: " + std::to_string(Mouse::getPosition(window).y) + " | sx: " + std::to_string(ship.getX()) + " , sy: " + std::to_string(ship.getY()));
+		window.setTitle("Hova | mx: " + std::to_string(Mouse::getPosition(window).x) + " , my: " + std::to_string(Mouse::getPosition(window).y) + " | sx: " + std::to_string(ship.getRelPosition().x) + " , sy: " + std::to_string(ship.getRelPosition().y));
 		inputPhase();
 		updatePhase();
 		renderPhase();
@@ -24,7 +24,7 @@ void Game::inputPhase(){
 }
 
 void Game::updatePhase(){
-	ship.followMouse(Mouse::getPosition(window));
+	ship.followMouseLine(Mouse::getPosition(window));
 	ship.Update();
 }
 
