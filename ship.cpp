@@ -3,12 +3,25 @@
 
 using namespace sf;
 
-Ship::Ship(const int initx, const int inity)
+Ship::Ship(const int initx, const int inity, const int sizex, const int sizey)
 {
-	shape.setSize(Vector2f(100, 40));
+	shape.setSize(Vector2f(sizex, sizey));
 	shape.setFillColor(Color::Green);
 	shape.setOutlineColor(Color::Red);
-	shape.setPosition(initx - shape.getSize().x / 2, inity - shape.getSize().y / 2);
+	shape.setPosition(initx, inity);
+}
+
+void Ship::followMouse(Vector2i mpos){
+	if (mpos.x > getX()) {
+		velocity.x += .01f;
+	} else {
+		velocity.x -= .01f;
+	}
+	if (mpos.y > getY()) {
+		velocity.y += .01f;
+	} else {
+		velocity.y -= .01f;
+	}
 }
 
 void Ship::Update()
