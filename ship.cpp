@@ -1,8 +1,9 @@
 #include <SFML/Window.hpp>
+#include <complex> // for simple polar -> cartesian convertion
 #include "ship.hpp"
-//#include <complex>
 
 using namespace sf;
+
 
 float Entity::getGravity() {
 	return gravity;
@@ -12,7 +13,6 @@ Ship::Ship(const int initx, const int inity, const int sizex, const int sizey)
 {
 	shape.setSize(Vector2f(sizex, sizey));
 	shape.setFillColor(Color::Blue);
-	//shape.setOutlineColor(Color::Red);
 	shape.setOrigin(sizex / 2.0f, sizey / 2.0f);
 	shape.setPosition(initx, inity);
 }
@@ -85,10 +85,20 @@ void Ship::update()
 		velocity.y *= .95f;
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Key::A)) {
-		shape.rotate(2.0f);
+		// apply rotation
+		shape.rotate(getThrusterRotation());
+		// apply thrust
+		std::complex<float> thrustPointer = std::polar(getThrusterPropulsion(), shape.getRotation() * static_cast<float>(M_PI) / 180.0f);
+		velocity.y -= real(thrustPointer);
+		velocity.x += imag(thrustPointer);
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Key::T)) {
-		shape.rotate(-2.0f);
+		// apply rotation
+		shape.rotate(-getThrusterRotation());
+		// apply thrust
+		std::complex<float> thrustPointer = std::polar(getThrusterPropulsion(), shape.getRotation() * static_cast<float>(M_PI) / 180.0f);
+		velocity.y -= real(thrustPointer);
+		velocity.x += imag(thrustPointer);
 	}
 	//shape.rotate(1.0f);
 	shape.move(velocity);
