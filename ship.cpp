@@ -68,13 +68,15 @@ void Ship::followMouseThrusters(Vector2i mpos) {
 	if (ydiff < -100) {
 		//shape.rotate(1);
 		fireLeftThruster(100);
-		fireLeftThruster(100);
-		fireRightThruster(100);
 		fireRightThruster(100);
 	}
-	else if (ydiff > -100 && ydiff < 0) {
-		fireLeftThruster(100);
-		fireRightThruster(100);
+	else if (ydiff > -100 && ydiff <= -50) {
+		fireLeftThruster(50);
+		fireRightThruster(50);
+	}
+	else if (ydiff > -50 && ydiff <= 0) {
+		fireLeftThruster(25);
+		fireRightThruster(25);
 	}
 
 	// limit velocity
