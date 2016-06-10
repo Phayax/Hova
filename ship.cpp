@@ -4,11 +4,16 @@
 
 using namespace sf;
 
+float Entity::getGravity() {
+	return gravity;
+}
+
 Ship::Ship(const int initx, const int inity, const int sizex, const int sizey)
 {
 	shape.setSize(Vector2f(sizex, sizey));
 	shape.setFillColor(Color::Blue);
 	//shape.setOutlineColor(Color::Red);
+	shape.setOrigin(sizex / 2.0f, sizey / 2.0f);
 	shape.setPosition(initx, inity);
 }
 
@@ -22,11 +27,20 @@ Vector2f Ship::getVelocity()
 	return velocity;
 }
 
+float Ship::getThrusterRotation() {
+	return thrusterRotationImpulse;
+}
+
+float Ship::getThrusterPropulsion() {
+	return thrusterPropulsionImpulse;
+}
+
 Vector2f Ship::getRelPosition()
 {
 	Vector2f pos = shape.getPosition();
-	pos.x += shape.getSize().x / 2;
-	pos.y += shape.getSize().y / 2;
+	// not necessary Shape.setOrigin moves the reference point.
+	//pos.x += shape.getSize().x / 2;
+	//pos.y += shape.getSize().y / 2;
 	return pos;
 }
 
@@ -55,29 +69,41 @@ void Ship::followMouseLine(Vector2i mpos)
 }
 
 void Ship::applyGravity(){
-	velocity.y += gravity / 50;
+	velocity.y += getGravity() / 5;
 }
 
 void Ship::update()
 {
 	if(Keyboard::isKeyPressed(Keyboard::Key::Left)) {
-		velocity.x -= 0.1f;
+		velocity.x -= keyPressAccel;
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Key::Right)) {
-		velocity.x += 0.1f;
+		velocity.x += keyPressAccel;
 	}
 	if(Keyboard::isKeyPressed(Keyboard::Key::Up)) {
-		velocity.y -= 0.1f;
+		velocity.y -= keyPressAccel;
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Key::Down)) {
-		velocity.y += 0.1f;
+		velocity.y += keyPressAccel;
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Key::Space)) {
 		velocity.x *= .95f;
 		velocity.y *= .95f;
 	}
+	if (Keyboard::isKeyPressed(Keyboard::Key::A)) {
+		shape.rotate(2.0f);
+	}
+	if (Keyboard::isKeyPressed(Keyboard::Key::T)) {
+		shape.rotate(-2.0f);
+	}
+	//shape.rotate(1.0f);
 	shape.move(velocity);
 }
+
+void Ship::inputUp() {
+	velocity.y -= 0.1f;
+}
+
 
 ShipVelocity::ShipVelocity(Ship* shipref): ship(shipref)
 {
