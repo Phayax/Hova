@@ -12,7 +12,7 @@ void Game::run(){
 	{
 		window.clear(Color::Black);
 		if (Keyboard::isKeyPressed(Keyboard::Key::Escape)) break;
-		window.setTitle("Hova | mx: " + std::to_string(Mouse::getPosition(window).x) + " , my: " + std::to_string(Mouse::getPosition(window).y) + " | sx: " + std::to_string(ship.getRelPosition().x) + " , sy: " + std::to_string(ship.getRelPosition().y));
+		window.setTitle("Hova | mx: " + std::to_string(Mouse::getPosition(window).x) + " , my: " + std::to_string(Mouse::getPosition(window).y) + " | sx: " + std::to_string(ship.getPosition().x) + " , sy: " + std::to_string(ship.getPosition().y));
 		inputPhase();
 		updatePhase();
 		renderPhase();

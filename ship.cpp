@@ -27,6 +27,10 @@ Vector2f Ship::getVelocity()
 	return velocity;
 }
 
+Vector2f Ship::getPosition() {
+	return shape.getPosition();
+}
+
 float Ship::getThrusterRotation() {
 	return thrusterRotationImpulse;
 }
@@ -35,23 +39,13 @@ float Ship::getThrusterPropulsion() {
 	return thrusterPropulsionImpulse;
 }
 
-Vector2f Ship::getRelPosition()
-{
-	Vector2f pos = shape.getPosition();
-	// not necessary Shape.setOrigin moves the reference point.
-	//pos.x += shape.getSize().x / 2;
-	//pos.y += shape.getSize().y / 2;
-	return pos;
-}
-
-
 void Ship::followMouse(Vector2i mpos){
-	if (mpos.x > getRelPosition().x) {
+	if (mpos.x > shape.getPosition().x) {
 		velocity.x += shipAccel;
 	} else {
 		velocity.x -= shipAccel;
 	}
-	if (mpos.y > getRelPosition().y) {
+	if (mpos.y > shape.getPosition().y) {
 		velocity.y += shipAccel;
 	} else {
 		velocity.y -= shipAccel;
@@ -61,7 +55,7 @@ void Ship::followMouse(Vector2i mpos){
 void Ship::followMouseLine(Vector2i mpos)
 {
 	//Vector2f spos = shape.getPosition();
-	Vector2f spos = getRelPosition();
+	Vector2f spos = shape.getPosition();
 	float xdiff = static_cast<float>(mpos.x) - spos.x;
 	float ydiff = static_cast<float>(mpos.y) - spos.y;
 	velocity.x = xdiff / 20;
@@ -115,7 +109,7 @@ void ShipVelocity::applyGravity(){}
 
 void ShipVelocity::update()
 {
-	shape.setPosition(ship->getRelPosition());
+	shape.setPosition(ship->getPosition());
 
 	// set position in the middle of the ship
 	Vector2f velocity = ship->getVelocity();

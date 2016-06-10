@@ -28,7 +28,7 @@ public:
 	float getY();
 	float getThrusterRotation();
 	float getThrusterPropulsion();
-	Vector2f getRelPosition();
+	Vector2f getPosition();
 	RectangleShape getShape();
 	Vector2f getVelocity();
 
