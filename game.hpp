@@ -2,7 +2,7 @@
 #include "ship.hpp"
 using namespace sf;
 
-constexpr int windowWidth{800}, windowHeight{600};
+constexpr int windowWidth{1300}, windowHeight{700};
 
 class Game {
 private:
