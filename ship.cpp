@@ -62,6 +62,30 @@ void Ship::followMouseLine(Vector2i mpos)
 	velocity.y = ydiff / 20;
 }
 
+void Ship::followMouseThrusters(Vector2i mpos) {
+	Vector2f spos = shape.getPosition();
+	float ydiff = static_cast<float>(mpos.y) - spos.y;
+	if (ydiff < -100) {
+		//shape.rotate(1);
+		fireLeftThruster(100);
+		fireLeftThruster(100);
+		fireRightThruster(100);
+		fireRightThruster(100);
+	}
+	else if (ydiff > -100 && ydiff < 0) {
+		fireLeftThruster(100);
+		fireRightThruster(100);
+	}
+
+	// limit velocity
+	// if (velocity.y < -0.02) {
+	// 	velocity.y = 0.01;
+	// }
+	// else if (velocity.y > 0.02) {
+	// 	velocity.y = 0.01;
+	// }
+}
+
 void Ship::applyGravity(){
 	velocity.y += getGravity() / 5;
 }
@@ -85,23 +109,45 @@ void Ship::update()
 		velocity.y *= .95f;
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Key::A)) {
-		// apply rotation
-		shape.rotate(getThrusterRotation());
-		// apply thrust
-		std::complex<float> thrustPointer = std::polar(getThrusterPropulsion(), shape.getRotation() * static_cast<float>(M_PI) / 180.0f);
-		velocity.y -= real(thrustPointer);
-		velocity.x += imag(thrustPointer);
+		fireLeftThruster(100);
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Key::T)) {
-		// apply rotation
-		shape.rotate(-getThrusterRotation());
-		// apply thrust
-		std::complex<float> thrustPointer = std::polar(getThrusterPropulsion(), shape.getRotation() * static_cast<float>(M_PI) / 180.0f);
-		velocity.y -= real(thrustPointer);
-		velocity.x += imag(thrustPointer);
+		fireRightThruster(100);
 	}
 	//shape.rotate(1.0f);
 	shape.move(velocity);
+	// apply rotation
+	shape.setRotation(rotation);
+}
+
+void Ship::fireLeftThruster(unsigned int percent) {
+	// limit percentage
+	if (percent > 100) {
+		percent = 100;
+	}
+	// apply rotation
+	rotation += getThrusterRotation();
+	//shape.rotate(getThrusterRotation());
+	// apply thrust
+	const float thrust = static_cast<float>(percent) / 100.0f * getThrusterPropulsion();
+	std::complex<float> thrustPointer = std::polar(thrust, shape.getRotation() * static_cast<float>(M_PI) / 180.0f);
+	velocity.y -= real(thrustPointer);
+	velocity.x += imag(thrustPointer);
+}
+
+void Ship::fireRightThruster(unsigned int percent) {
+	// limit percentage
+	if (percent > 100) {
+		percent = 100;
+	}
+		// apply rotation
+	rotation -= getThrusterRotation();
+	//shape.rotate(-getThrusterRotation());
+	// apply thrust
+	const float thrust = static_cast<float>(percent) / 100.0f * getThrusterPropulsion();
+	std::complex<float> thrustPointer = std::polar(thrust, shape.getRotation() * static_cast<float>(M_PI) / 180.0f);
+	velocity.y -= real(thrustPointer);
+	velocity.x += imag(thrustPointer);	
 }
 
 void Ship::inputUp() {

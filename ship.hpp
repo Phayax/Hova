@@ -22,6 +22,7 @@ private:
 	const float shipAccel = .96f;
 	const float thrusterRotationImpulse = 3.0f;
 	const float thrusterPropulsionImpulse = 0.1f;
+	float rotation = 0.0f;
 	Vector2f velocity{0.0f, 0.1f};
 	RectangleShape shape;
 
@@ -37,8 +38,11 @@ public:
 
 	void followMouse(Vector2i mpos);
 	void followMouseLine(Vector2i mpos);
+	void followMouseThrusters(Vector2i mpos);
 
 	void inputUp();
+	void fireLeftThruster(unsigned int percent); 
+	void fireRightThruster(unsigned int percent);
 
 	void applyGravity() override;
 	void update() override;

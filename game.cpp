@@ -2,6 +2,8 @@
 #include <string>
 #include "game.hpp"
 
+#include <iostream>
+
 Game::Game()
 {
 	window.setFramerateLimit(60);
@@ -25,6 +27,7 @@ void Game::inputPhase(){
 void Game::updatePhase(){
 	ship.applyGravity();
 	//ship.followMouseLine(Mouse::getPosition(window));
+	ship.followMouseThrusters(Mouse::getPosition(window));
 	ship.update();
 	shipVector.update();
 }
