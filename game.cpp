@@ -23,8 +23,8 @@ void Game::inputPhase(){
 }
 
 void Game::updatePhase(){
-	//ship.applyGravity();
-	ship.followMouseLine(Mouse::getPosition(window));
+	ship.applyGravity();
+	//ship.followMouseLine(Mouse::getPosition(window));
 	ship.update();
 	shipVector.update();
 }

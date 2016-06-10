@@ -8,7 +8,7 @@ using namespace sf;
 class Entity {
 protected:
 	// gravity factor in g | [g] = m/s^2
-	const float gravity = 1.0f;
+	const float gravity = 0.5f;
 public:
 	float getGravity();
 
@@ -20,8 +20,8 @@ class Ship : public Entity{
 private:
 	const float keyPressAccel = .4f;
 	const float shipAccel = .96f;
-	const float thrusterRotationImpulse = 4.0f;
-	const float thrusterPropulsionImpulse = 1.0f;
+	const float thrusterRotationImpulse = 3.0f;
+	const float thrusterPropulsionImpulse = 0.1f;
 	Vector2f velocity{0.0f, 0.1f};
 	RectangleShape shape;
 
