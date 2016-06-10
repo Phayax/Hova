@@ -1,9 +1,12 @@
+#ifndef HOVA_SHIP_H
+#define HOVA_SHIP_H
+
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
 
 class Entity {
-private:
+protected:
 	// gravity factor in g | [g] = m/s^2
 	const float gravity = 1.0f;
 public:
@@ -41,15 +44,5 @@ public:
 	void update() override;
 };
 
-class ShipVelocity : public Entity{
-private:
-	RectangleShape shape;
-	Ship* ship;
 
-public: 
-	ShipVelocity(Ship* shipref);
-	RectangleShape getShape();
-
-	void applyGravity() override;
-	void update() override;
-};
+#endif // HOVA_SHIP_H
