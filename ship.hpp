@@ -35,10 +35,14 @@ public:
 	Vector2f getPosition();
 	RectangleShape getShape();
 	Vector2f getVelocity();
+	// careful here:
+	// ship.rotation is the attribute to gather all rotation processes in one tick
+	// ship.shape.rotation is the actual rotation state.
+	float getRotation();
 
 	void followMouse(Vector2i mpos);
 	void followMouseLine(Vector2i mpos);
-	void followMouseThrusters(Vector2i mpos);
+	unsigned int followMouseThrusters(Vector2i mpos);
 
 	void inputUp();
 	void fireLeftThruster(unsigned int percent); 

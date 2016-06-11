@@ -62,30 +62,33 @@ void Ship::followMouseLine(Vector2i mpos)
 	velocity.y = ydiff / 20;
 }
 
-void Ship::followMouseThrusters(Vector2i mpos) {
+unsigned int Ship::followMouseThrusters(Vector2i mpos) {
 	Vector2f spos = shape.getPosition();
+	Vector2f predictedPosition;
+
+	float xdiff = static_cast<float>(mpos.x) - spos.x;
 	float ydiff = static_cast<float>(mpos.y) - spos.y;
-	if (ydiff < -100) {
-		//shape.rotate(1);
+
+	float projectedTargetY = spos.y;
+	float projectedVeloY = velocity.y;
+	unsigned int tickCounter = 0;
+
+	while (projectedVeloY < 0) {
+		projectedTargetY += projectedVeloY;
+		projectedVeloY += getGravity() / 5;
+		tickCounter++;
+	}
+
+	if (static_cast<int>(projectedTargetY) > mpos.y) {
 		fireLeftThruster(100);
 		fireRightThruster(100);
 	}
-	else if (ydiff > -100 && ydiff <= -50) {
-		fireLeftThruster(50);
-		fireRightThruster(50);
-	}
-	else if (ydiff > -50 && ydiff <= 0) {
-		fireLeftThruster(25);
-		fireRightThruster(25);
-	}
 
-	// limit velocity
-	// if (velocity.y < -0.02) {
-	// 	velocity.y = 0.01;
-	// }
-	// else if (velocity.y > 0.02) {
-	// 	velocity.y = 0.01;
-	// }
+	return tickCounter;
+}
+
+float Ship::getRotation() {
+	return shape.getRotation();
 }
 
 void Ship::applyGravity(){
