@@ -25,8 +25,8 @@ void Game::run(){
             " ~ " + std::to_string(ship.getVelocity().y) +
             //"mx: " + std::to_string(Mouse::getPosition(window).x) +
             //" , my: " + std::to_string(Mouse::getPosition(window).y) + 
-            //" | sx: " + std::to_string(ship.getPosition().x) + 
-            //" , sy: " + std::to_string(ship.getPosition().y) + 
+            "\nsx: " + std::to_string(ship.getPosition().x) + 
+            " , sy: " + std::to_string(ship.getPosition().y) + 
             "\nrot: " + std::to_string(static_cast<int>(ship.getRotation()));
         statsText.setString(statusString);
         inputPhase();
@@ -44,11 +44,14 @@ void Game::updatePhase(){
     ship.followMouseThrusters(Mouse::getPosition(window));
     ship.update();
     shipVector.update();
+    thrustVectors.update();
 }
 
 void Game::renderPhase(){
     window.draw(ship.getShape());
     window.draw(shipVector.getShape());
+    window.draw(thrustVectors.getLeftShape());
+    window.draw(thrustVectors.getRightShape());
     window.draw(statsText);
     window.display();
 }

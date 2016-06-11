@@ -19,4 +19,20 @@ public:
     void update() override;
 };
 
+class ThrusterVectors : public Entity{
+private:
+    RectangleShape shapeLeft;
+    RectangleShape shapeRight;
+    Ship* ship;
+
+public:
+    ThrusterVectors(Ship* shipref);
+    RectangleShape getLeftShape();
+    RectangleShape getRightShape();
+
+    void applyGravity() override;
+    void update() override;
+};
+
+
 #endif // HOVA_VELOVEC_H

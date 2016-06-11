@@ -7,7 +7,7 @@
 
 using namespace sf;
 
-constexpr int windowWidth{1300}, windowHeight{700};
+constexpr int windowWidth{1000}, windowHeight{700};
 
 class Game {
 private:
@@ -15,6 +15,7 @@ private:
     RenderWindow window{{windowWidth, windowHeight},"Hova - Fly Away!"};
     Ship ship{windowWidth / 2, windowHeight / 2,100,40};
     VelocityVector shipVector{&ship};
+    ThrusterVectors thrustVectors{&ship};
     Text statsText{};
     Font font{};
 
