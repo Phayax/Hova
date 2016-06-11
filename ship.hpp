@@ -8,7 +8,8 @@ using namespace sf;
 class Entity {
 protected:
     // gravity factor in g | [g] = m/s^2
-    const float gravity = 0.5f;
+    // ugly bugfix
+    const float gravity = 0.51f;
 public:
     float getGravity();
 
@@ -21,10 +22,13 @@ private:
     const float keyPressAccel = .4f;
     const float shipAccel = .96f;
     const float thrusterRotationImpulse = 3.0f;
-    const float thrusterPropulsionImpulse = 0.1f;
+    const float thrusterPropulsionImpulse = 0.2f;
     float rotation = 0.0f;
     Vector2f velocity{0.0f, 0.1f};
     RectangleShape shape;
+
+    unsigned int leftThrusterPercent = 0;
+    unsigned int rightThrusterPercent = 0;
 
 public:
     Ship(const int initx, const int inity, const int sizex, const int sizey);
@@ -40,11 +44,13 @@ public:
     // ship.shape.rotation is the actual rotation state.
     float getRotation();
 
+    unsigned int getLeftThruster();
+    unsigned int getRightThruster();
+
     void followMouse(Vector2i mpos);
     void followMouseLine(Vector2i mpos);
     void followMouseThrusters(Vector2i mpos);
 
-    void inputUp();
     void fireLeftThruster(unsigned int percent); 
     void fireRightThruster(unsigned int percent);
 

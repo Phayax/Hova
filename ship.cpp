@@ -1,6 +1,7 @@
 #include <SFML/Window.hpp>
 #include <complex> // for simple polar -> cartesian convertion
 #include "ship.hpp"
+#include <iostream>
 
 using namespace sf;
 
@@ -72,14 +73,48 @@ void Ship::followMouseThrusters(Vector2i mpos) {
     float projectedTargetY = spos.y;
     float projectedVeloY = velocity.y;
 
-    // calculate the maximum height when no thrusters were used any more
-    while (projectedVeloY < 0) {
-        projectedTargetY += projectedVeloY;
-        projectedVeloY += getGravity() / 5;
+    // reset fill color
+    shape.setFillColor(Color::Blue);
+
+    // if the mouse is above the ship
+    if (static_cast<float>(mpos.y) < spos.y) {
+        // calculate the maximum height when no thrusters were used any more
+        while (projectedVeloY < 0) {
+            // get y-axis thrust and apply it to the y-velocity
+            //std::complex<float> thrustPointer = std::polar(getThrusterPropulsion(), shape.getRotation() * static_cast<float>(M_PI) / 180.0f);
+            //projectedVeloY -= real(thrustPointer);
+
+            projectedTargetY += projectedVeloY;
+            projectedVeloY += getGravity() / 5;
+        }
+    } else {
+        // calculate the minimum height if thruster were fired constantly
+        while(projectedVeloY > 0) {
+            // just assume full thrust
+            projectedTargetY += projectedVeloY;
+            
+            // get y-axis thrust and apply it to the y-velocity
+            std::complex<float> thrustPointer = std::polar(getThrusterPropulsion() * 2, shape.getRotation() * static_cast<float>(M_PI) / 180.0f);
+            projectedVeloY -= real(thrustPointer);
+
+            if (real(thrustPointer) < getGravity() / 5) {
+                std::cout << "critical angle" << std::endl;
+                // alert the user that the ship can't keep the height
+                shape.setFillColor(Color::Red);
+                // make sure the thrusters don't fire(otherwise the ship is just going to veer away)
+                // by making sure the succesing if statement always runs.
+                projectedTargetY = mpos.y - 1.0f;
+                break;
+            }
+            // apply gravity
+            projectedVeloY += getGravity() / 5;
+        }
     }
     // if the projected maximum y coordinate is below the mouse fire the thrusters
     // otherwise do nothing (let the ship slow down)
     if (static_cast<int>(projectedTargetY) > mpos.y) {
+        // it would be possible to adjust the thrusters better here but it
+        // would be complicated and it looks nice if the ship takes a moment to adjust.
         fireLeftThruster(100);
         fireRightThruster(100);
     }
@@ -90,6 +125,8 @@ float Ship::getRotation() {
 }
 
 void Ship::applyGravity(){
+    leftThrusterPercent = 0;
+    rightThrusterPercent = 0;
     velocity.y += getGravity() / 5;
 }
 
@@ -118,7 +155,7 @@ void Ship::update()
         fireRightThruster(100);
     }
     //shape.rotate(1.0f);
-    shape.move(velocity);
+    shape.move(Vector2f(0.0f, velocity.y));
     // apply rotation
     shape.setRotation(rotation);
 }
@@ -128,6 +165,7 @@ void Ship::fireLeftThruster(unsigned int percent) {
     if (percent > 100) {
         percent = 100;
     }
+    leftThrusterPercent = percent;
     // apply rotation
     rotation += getThrusterRotation();
     //shape.rotate(getThrusterRotation());
@@ -143,6 +181,7 @@ void Ship::fireRightThruster(unsigned int percent) {
     if (percent > 100) {
         percent = 100;
     }
+    rightThrusterPercent = percent;
         // apply rotation
     rotation -= getThrusterRotation();
     //shape.rotate(-getThrusterRotation());
@@ -153,6 +192,9 @@ void Ship::fireRightThruster(unsigned int percent) {
     velocity.x += imag(thrustPointer);  
 }
 
-void Ship::inputUp() {
-    velocity.y -= 0.1f;
+unsigned int Ship::getLeftThruster() {
+    return leftThrusterPercent;
+}
+unsigned int Ship::getRightThruster() {
+    return rightThrusterPercent;
 }
