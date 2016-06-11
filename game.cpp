@@ -41,7 +41,7 @@ void Game::inputPhase(){
 void Game::updatePhase(){
     ship.applyGravity();
     //ship.followMouseLine(Mouse::getPosition(window));
-    statsText.setString(statsText.getString() + " | ttt: " + std::to_string(ship.followMouseThrusters(Mouse::getPosition(window))));
+    ship.followMouseThrusters(Mouse::getPosition(window));
     ship.update();
     shipVector.update();
 }

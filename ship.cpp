@@ -62,7 +62,7 @@ void Ship::followMouseLine(Vector2i mpos)
     velocity.y = ydiff / 20;
 }
 
-unsigned int Ship::followMouseThrusters(Vector2i mpos) {
+void Ship::followMouseThrusters(Vector2i mpos) {
     Vector2f spos = shape.getPosition();
     Vector2f predictedPosition;
 
@@ -71,20 +71,18 @@ unsigned int Ship::followMouseThrusters(Vector2i mpos) {
 
     float projectedTargetY = spos.y;
     float projectedVeloY = velocity.y;
-    unsigned int tickCounter = 0;
 
+    // calculate the maximum height when no thrusters were used any more
     while (projectedVeloY < 0) {
         projectedTargetY += projectedVeloY;
         projectedVeloY += getGravity() / 5;
-        tickCounter++;
     }
-
+    // if the projected maximum y coordinate is below the mouse fire the thrusters
+    // otherwise do nothing (let the ship slow down)
     if (static_cast<int>(projectedTargetY) > mpos.y) {
         fireLeftThruster(100);
         fireRightThruster(100);
     }
-
-    return tickCounter;
 }
 
 float Ship::getRotation() {

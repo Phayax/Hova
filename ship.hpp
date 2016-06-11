@@ -42,7 +42,7 @@ public:
 
     void followMouse(Vector2i mpos);
     void followMouseLine(Vector2i mpos);
-    unsigned int followMouseThrusters(Vector2i mpos);
+    void followMouseThrusters(Vector2i mpos);
 
     void inputUp();
     void fireLeftThruster(unsigned int percent); 
